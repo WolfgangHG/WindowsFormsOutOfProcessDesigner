@@ -489,7 +489,6 @@ Then install NuGet by first choosing package source from the dropdown list.
    * [TypeRoutingProvider.cs](#typeroutingprovidercs_client)
 
 ## MyButtonViewModel.cs
-<a name="mybuttonviewmodelcs_client" />
    ```c#
    using System;
    using Microsoft.DotNet.DesignTools.Client.Proxies;
@@ -533,6 +532,7 @@ Then install NuGet by first choosing package source from the dropdown list.
    }
    ```
    
+<a id="mybuttonviewmodelcs_client" ></a>
 ## MyButtonEditor.cs
    ```c#
    using System;
@@ -565,8 +565,9 @@ Then install NuGet by first choosing package source from the dropdown list.
      }
    }
    ```
+
+<a id="typeroutingprovidercs_client"></a>
 ## TypeRoutingProvider.cs
-<a name="typeroutingprovidercs_client" />
    ```c#
    using Microsoft.DotNet.DesignTools.Client.TypeRouting;
    using System.Collections.Generic;
