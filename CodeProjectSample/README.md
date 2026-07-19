@@ -37,7 +37,7 @@ server, in both .NET 4.7 and 6
 3. [MyButton.Designer.Server](#third-part---mybuttondesignerserver) - Smart tag implementation
 4. [MyButton.Designer.Client](#fourth-part---mybuttondesignerclient) - Implementation of editor, behaviour of the property, and it is still
 in .NET 4.7
-5. [MyButton.Package](#fifth-part-my-button-package) - Package of the control created, it has to be last builded
+5. [MyButton.Package](#fifth-part---mybuttonpackage) - Package of the control created, it has to be last builded
 
 Install NuGet package [Microsoft.WinForms.Designer.SDK](https://www.nuget.org/packages/Microsoft.WinForms.Designer.SDK) for projects
 MyButton.ClientServerProtocol, MyButton.Designer.Server and MyButton.Designer.Client:
@@ -484,11 +484,12 @@ Then install NuGet by first choosing package source from the dropdown list.
    ```
    
 3. Add three files:
-   * [MyButtonViewModel.cs](#mybuttonviewmodelcs)
+   * [MyButtonViewModel.cs](#mybuttonviewmodelcs_client)
    * [MyButtonEditor.cs](#mybuttoneditorcs)
-   * [TypeRoutingProvider.cs](#typeroutingprovidercs)
+   * [TypeRoutingProvider.cs](#typeroutingprovidercs_client)
 
 ## MyButtonViewModel.cs
+<a name="mybuttonviewmodelcs_client" />
    ```c#
    using System;
    using Microsoft.DotNet.DesignTools.Client.Proxies;
@@ -565,6 +566,7 @@ Then install NuGet by first choosing package source from the dropdown list.
    }
    ```
 ## TypeRoutingProvider.cs
+<a name="typeroutingprovidercs_client" />
    ```c#
    using Microsoft.DotNet.DesignTools.Client.TypeRouting;
    using System.Collections.Generic;
