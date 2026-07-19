@@ -7,7 +7,7 @@ but the zip archive containing the sample is not restorable. So I rebuilt it usi
 
 So, below is the original CodeProject description.
 
-The sample code is found in directory [MyButtonDesignerTest](/MyButtonDesignerTest). It uses .NET 9.0 and 
+The sample code is found in directory [MyButtonDesignerTest](/CodeProjectSample/MyButtonDesignerTest). It uses .NET 9.0 and 
 the package `Microsoft.WinForms.Designer.SDK` was upgraded to the most recent version `1.6.0`
 
 I addition to the original text, I added a small sample app to the solution, see [The sample app](#the-sample-app)
@@ -31,11 +31,11 @@ example](https://github.com/KlausLoeffelmann/NetControlDesigners).
 # Using the Code
 This example was made using Visual Studio 2022 and there will be four class library projects and
 one Windows Control Library needed:
-1. [MyButtonControl](#first-part-my-button-control) - Control implementation like properties, button inheritance
-2. [MyButton.ClientServerProtocol](#second-part-my-button-client-server-protocol) - Windows Control Library, connection between client and
+1. [MyButtonControl](#first-part---mybuttoncontrol) - Control implementation like properties, button inheritance
+2. [MyButton.ClientServerProtocol](#second-part---mybuttonclientserverprotocol) - Windows Control Library, connection between client and
 server, in both .NET 4.7 and 6
-3. [MyButton.Designer.Server](#third-part-my-button-designer-server) - Smart tag implementation
-4. [MyButton.Designer.Client](#fourth-part-my-button-designer-client) - Implementation of editor, behaviour of the property, and it is still
+3. [MyButton.Designer.Server](#third-part---mybuttondesignerserver) - Smart tag implementation
+4. [MyButton.Designer.Client](#fourth-part---mybuttondesignerclient) - Implementation of editor, behaviour of the property, and it is still
 in .NET 4.7
 5. [MyButton.Package](#fifth-part-my-button-package) - Package of the control created, it has to be last builded
 
@@ -64,9 +64,9 @@ Then install NuGet by first choosing package source from the dropdown list.
    </Project>
    ```
 2. Add three files:
-   * [MyButton.cs](#my-button-cs)
-   * [MyType.cs](#my-type-cs)
-   * [MyTypeConverter.cs](#my-type-converter-cs)
+   * [MyButton.cs](#mybuttoncs)
+   * [MyType.cs](#mytypecs)
+   * [MyTypeConverter.cs](#mytypeconvertercs)
 
 ## MyButton.cs
    ```c#
@@ -158,12 +158,12 @@ Then install NuGet by first choosing package source from the dropdown list.
    ```
    
 3. Add six files:
-   * [AllowNullAttribute.cs](#allow-null-attribute-cs)
-   * [EndpointNames.cs](#endpoint-names-cs)
-   * [ViewModelNames.cs](#view-model-names-cs)
-   * [MyButtonViewModelRequest.cs](#my-button-view-model-request-cs)
-   * [MyButtonViewModelResponse.cs](#my-button-view-model-response-cs)
-   * [MyButtonViewModelEndpoint.cs](#my-button-view-model-endpoint-cs)
+   * [AllowNullAttribute.cs](#allownullattributecs)
+   * [EndpointNames.cs](#endpointnamescs)
+   * [ViewModelNames.cs](#viewmodelnamescs)
+   * [MyButtonViewModelRequest.cs](#mybuttonviewmodelrequestcs)
+   * [MyButtonViewModelResponse.cs](#mybuttonviewmodelresponsecs)
+   * [MyButtonViewModelEndpoint.cs](#mybuttonviewmodelendpointcs)
 
 ## AllowNullAttribute.cs
    ```c#
@@ -312,12 +312,12 @@ Then install NuGet by first choosing package source from the dropdown list.
    ```
    
 3. Add six files:
-   * [MyButtonDesigner.cs](#my-button-designer-cs)
-   * [MyButtonViewModel.cs](#my-button-view-model-cs)
-   * [MyButton.ActionList.cs](#my-button-action-list-cs)
-   * [MyButtonViewModelHandler.cs](#my-button-view-model-handler-cs)
-   * [MyButtonViewModel.Factory.cs](#my-button-view-model-factory-cs)
-   * [TypeRoutingProvider.cs](#type-routing-provider-cs)
+   * [MyButtonDesigner.cs](#mybuttondesignercs)
+   * [MyButtonViewModel.cs](#mybuttonviewmodelcs)
+   * [MyButton.ActionList.cs](#mybuttonactionlistcs)
+   * [MyButtonViewModelHandler.cs](#mybuttonviewmodelhandlercs)
+   * [MyButtonViewModel.Factory.cs](#mybuttonviewmodelfactorycs)
+   * [TypeRoutingProvider.cs](#typeroutingprovidercs)
 
 ## MyButtonDesigner.cs
    ```c#
@@ -484,9 +484,9 @@ Then install NuGet by first choosing package source from the dropdown list.
    ```
    
 3. Add three files:
-   * [MyButtonViewModel.cs](#my-button-view-model-cs)
-   * [MyButtonEditor.cs](#my-button-editor-cs)
-   * [TypeRoutingProvider.cs](#type-routing-provider-cs)
+   * [MyButtonViewModel.cs](#mybuttonviewmodelcs)
+   * [MyButtonEditor.cs](#mybuttoneditorcs)
+   * [TypeRoutingProvider.cs](#typeroutingprovidercs)
 
 ## MyButtonViewModel.cs
    ```c#
