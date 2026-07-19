@@ -675,7 +675,7 @@ In the original article, a sample app was not described. Maybe it was part of th
 
 So, add a new "Windows Forms App" project targeting .NET 6.0 to the solution.
 
-This project has to reference the Nuget package created from project [MyButton.Package](#fifth-part-my-button-package).
+This project has to reference the Nuget package created from project [MyButton.Package](#fifth-part---mybuttonpackage).
 So, first add a file "Nuget.config" to the root of the solution:
 
 ```xml
@@ -707,7 +707,7 @@ Then add a package reference to the `.csproj` file:
 </Project>
 ```
 
-Just for completeness, I added project dependency on the `MyButton.Package` project, see above.
+Just for completeness, I added a project dependency on the `MyButton.Package` project, see above.
 
 Visual Studio will now resolve the Package from the build output of the `MyButton.Package` project.
 
