@@ -1,0 +1,11 @@
+**/bin/**
+**/obj/**
+
+**.suo
+**.user
+
+**.vs/**
+
+[Bb]in/
+[Oo]bj/
+.vs

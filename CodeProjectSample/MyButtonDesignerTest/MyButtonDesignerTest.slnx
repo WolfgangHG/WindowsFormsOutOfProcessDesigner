@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="NuGet.config" />
+  </Folder>
+  <Project Path="MyButton.ClientServerProtocol/MyButton.ClientServerProtocol.csproj" />
+  <Project Path="MyButton.Designer.Client/MyButton.Designer.Client.csproj" />
+  <Project Path="MyButton.Designer.Server/MyButton.Designer.Server.csproj" />
+  <Project Path="MyButton.Package/MyButton.Package.csproj">
+    <BuildDependency Project="MyButton.Designer.Client/MyButton.Designer.Client.csproj" />
+    <BuildDependency Project="MyButton.Designer.Server/MyButton.Designer.Server.csproj" />
+  </Project>
+  <Project Path="MyButtonControl/MyButtonControl.csproj" />
+  <Project Path="MySampleApp/MySampleApp.csproj">
+    <BuildDependency Project="MyButton.Package/MyButton.Package.csproj" />
+  </Project>
+</Solution>

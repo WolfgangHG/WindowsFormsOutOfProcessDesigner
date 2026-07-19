@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);_GetFilesToPackage</TargetsForTfmSpecificContentInPackage>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+  </PropertyGroup>
+  <Target Name="_GetFilesToPackage">
+    <ItemGroup>
+      <_File Include="$(SolutionDir)\MyButtonControl\bin\$(Configuration)\net9.0-windows\MyButtonControl.dll"/>
+      <_File Include="$(SolutionDir)\MyButton.Designer.Client\bin\$(Configuration)\net48\MyButton.Designer.Client.dll"
+             TargetDir="Design/WinForms"/>
+      <_File Include="$(SolutionDir)\MyButton.Designer.Server\bin\$(Configuration)\net9.0-windows\MyButton.Designer.Server.dll"
+             TargetDir="Design/WinForms/Server"/>
+
+      <_File Include="$(SolutionDir)\MyButton.ClientServerProtocol\bin\$(Configuration)\net48\MyButton.ClientServerProtocol.dll"
+       TargetDir="Design/WinForms" />
+      <_File Include="$(SolutionDir)\MyButton.ClientServerProtocol\bin\$(Configuration)\net9.0-windows\MyButton.ClientServerProtocol.dll"
+       TargetDir="Design/WinForms/Server" />
+    </ItemGroup>
+    <ItemGroup>
+      <TfmSpecificPackageFile Include="@(_File)"
+                              PackagePath="$(BuildOutputTargetFolder)/$(TargetFramework)/%(_File.TargetDir)"/>
+    </ItemGroup>
+  </Target>
+
+</Project>
