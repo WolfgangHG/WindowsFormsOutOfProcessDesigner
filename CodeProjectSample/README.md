@@ -69,73 +69,77 @@ Then install NuGet by first choosing package source from the dropdown list.
    * [MyTypeConverter.cs](#mytypeconvertercs)
 
 ## MyButton.cs
-   ```c#
-   using System.ComponentModel;
-   using System.Windows.Forms;
-   
-   namespace MyButtonControl
-   {
-     [Designer("MyButtonDesigner"), ComplexBindingProperties("DataSource")]
-     public class MyButton : Button
-     {
-       public MyType MyProperty { get; set; }
-     }
-   }
-   ```
+```c#
+using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace MyButtonControl
+{
+  [Designer("MyButtonDesigner"), ComplexBindingProperties("DataSource")]
+  public class MyButton : Button
+  {
+    public MyType MyProperty { get; set; }
+  }
+}
+```
    
 ## MyType.cs
-   ```c#
-   using System.ComponentModel;
-   using System.Drawing.Design;
-   
-   namespace MyButtonControl
-   {
-     [TypeConverter(typeof(MyTypeConverter))]
-     [Editor("MyButtonEditor", typeof(UITypeEditor))]
-     public class MyType
-     {
-       public string AnotherMyProperty { get; set; }
-       public MyType(string value)
-       {
-         AnotherMyProperty = value;
-       }
-     }
-   }
-   ```
+```c#
+using System.ComponentModel;
+using System.Drawing.Design;
+
+namespace MyButtonControl
+{
+  [TypeConverter(typeof(MyTypeConverter))]
+  [Editor("MyButtonEditor", typeof(UITypeEditor))]
+  public class MyType
+  {
+    public string AnotherMyProperty { get; set; }
+
+    public MyType(string value)
+    {
+      AnotherMyProperty = value;
+    }
+  }
+}
+```
    
 ## MyTypeConverter.cs
-   ```c#
-   using System;
-   using System.ComponentModel;
-   using System.Globalization;
-   
-   namespace MyButtonControl
-   {
-     internal class MyTypeConverter : TypeConverter
-     {
-       public override bool CanConvertTo (ITypeDescriptorContext context, Type destinationType)
-       {
-         return true;
-       }
-       public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-       {
-         return true;
-       }
-       public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
-       {
-         if (value is null)
-         {
-           return string.Empty;
-         }
-         return new MyType(value.ToString());
-       }
-       public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
-       {
-         return ((MyType)value)?.AnotherMyProperty;
-       }
-     }
-   }
-   ```
+```c#
+using System;
+using System.ComponentModel;
+using System.Globalization;
+
+namespace MyButtonControl
+{
+  internal class MyTypeConverter : TypeConverter
+  {
+    public override bool CanConvertTo (ITypeDescriptorContext context, Type destinationType)
+    {
+      return true;
+    }
+    
+    public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+    {
+      return true;
+    }
+    
+    public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+    {
+      if (value is null)
+      {
+        return string.Empty;
+      }
+      return new MyType(value.ToString());
+    }
+    
+    public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+    {
+      return ((MyType)value)?.AnotherMyProperty;
+    }
+  }
+}
+```
    
    
 # Second Part - MyButton.ClientServerProtocol
@@ -200,99 +204,113 @@ Then install NuGet by first choosing package source from the dropdown list.
    ```
    
 ## MyButtonViewModelRequest.cs
-   ```c#
-   using Microsoft.DotNet.DesignTools.Protocol.DataPipe;
-   using Microsoft.DotNet.DesignTools.Protocol;
-   using Microsoft.DotNet.DesignTools.Protocol.Endpoints;
-   using System;
-   
-   namespace MyButton.ClientServerProtocol
-   {
-     public class MyButtonViewModelRequest : Request
-     {
-       public SessionId SessionId { get; private set; }
-       public object? MyPropertyEditorProxy { get; private set; }
-       public MyButtonViewModelRequest() { }
-       public MyButtonViewModelRequest(SessionId sessionId, object? myProxy)
-       {
-         SessionId = sessionId.IsNull ?
-           throw new ArgumentNullException(nameof(sessionId)) : sessionId;
-           MyPropertyEditorProxy = myProxy;
-       }
-       public MyButtonViewModelRequest(IDataPipeReader reader) : base(reader) { }
-       protected override void ReadProperties(IDataPipeReader reader)
-       {
-         SessionId = reader.ReadSessionId(nameof(SessionId));
-         MyPropertyEditorProxy = reader.ReadObject(nameof(MyPropertyEditorProxy));
-       }
-       protected override void WriteProperties(IDataPipeWriter writer)
-       {
-         writer.Write(nameof(SessionId), SessionId);
-         writer.WriteObject(nameof(MyPropertyEditorProxy), MyPropertyEditorProxy);
-       }
-     }
-   }
-   ```
+```c#
+using Microsoft.DotNet.DesignTools.Protocol.DataPipe;
+using Microsoft.DotNet.DesignTools.Protocol;
+using Microsoft.DotNet.DesignTools.Protocol.Endpoints;
+using System;
+
+namespace MyButton.ClientServerProtocol
+{
+  public class MyButtonViewModelRequest : Request
+  {
+    public SessionId SessionId { get; private set; }
+    public object? MyPropertyEditorProxy { get; private set; }
+    
+    public MyButtonViewModelRequest() { }
+    
+    public MyButtonViewModelRequest(SessionId sessionId, object? myProxy)
+    {
+      SessionId = sessionId.IsNull ?
+        throw new ArgumentNullException(nameof(sessionId)) : sessionId;
+        MyPropertyEditorProxy = myProxy;
+    }
+    
+    public MyButtonViewModelRequest(IDataPipeReader reader) : base(reader) { }
+    
+    protected override void ReadProperties(IDataPipeReader reader)
+    {
+      SessionId = reader.ReadSessionId(nameof(SessionId));
+      MyPropertyEditorProxy = reader.ReadObject(nameof(MyPropertyEditorProxy));
+    }
+    
+    protected override void WriteProperties(IDataPipeWriter writer)
+    {
+      writer.Write(nameof(SessionId), SessionId);
+      writer.WriteObject(nameof(MyPropertyEditorProxy), MyPropertyEditorProxy);
+    }
+  }
+}
+```
 
 ## MyButtonViewModelResponse.cs
-   ```c#
-   using Microsoft.DotNet.DesignTools.Protocol.DataPipe;
-   using Microsoft.DotNet.DesignTools.Protocol.Endpoints;
-   using System;
-   using System.Diagnostics.CodeAnalysis;
-   
-   namespace MyButton.ClientServerProtocol
-   {
-     public class MyButtonViewModelResponse : Response
-     {
-       [AllowNull]
-       public object ViewModel { get; private set; }
-       [AllowNull]
-       public object MyProperty { get; private set; }
-       public MyButtonViewModelResponse() { }
-       public MyButtonViewModelResponse(object viewModel, object myProperty)
-       {
-         ViewModel = viewModel ?? throw new ArgumentNullException(nameof(viewModel));
-         MyProperty = myProperty;
-       }
-       public MyButtonViewModelResponse(object viewModel)
-       {
-         ViewModel = viewModel ?? throw new ArgumentNullException(nameof(viewModel));
-       }
-       public MyButtonViewModelResponse(IDataPipeReader reader) : base(reader) { }
-       protected override void ReadProperties(IDataPipeReader reader)
-       {
-         ViewModel = reader.ReadObject(nameof(ViewModel));
-       }
-       protected override void WriteProperties(IDataPipeWriter writer)
-       {
-         writer.WriteObject(nameof(ViewModel), ViewModel);
-         writer.WriteObject(nameof(MyProperty), MyProperty);
-       }
-     }
-   }
-   ```
+```c#
+using Microsoft.DotNet.DesignTools.Protocol.DataPipe;
+using Microsoft.DotNet.DesignTools.Protocol.Endpoints;
+using System;
+using System.Diagnostics.CodeAnalysis;
+
+namespace MyButton.ClientServerProtocol
+{
+  public class MyButtonViewModelResponse : Response
+  {
+    [AllowNull]
+    public object ViewModel { get; private set; }
+    
+    [AllowNull]
+    public object MyProperty { get; private set; }
+    
+    public MyButtonViewModelResponse() { }
+    
+    public MyButtonViewModelResponse(object viewModel, object myProperty)
+    {
+      ViewModel = viewModel ?? throw new ArgumentNullException(nameof(viewModel));
+      MyProperty = myProperty;
+    }
+    
+    public MyButtonViewModelResponse(object viewModel)
+    {
+      ViewModel = viewModel ?? throw new ArgumentNullException(nameof(viewModel));
+    }
+    
+    public MyButtonViewModelResponse(IDataPipeReader reader) : base(reader) { }
+    
+    protected override void ReadProperties(IDataPipeReader reader)
+    {
+      ViewModel = reader.ReadObject(nameof(ViewModel));
+    }
+    
+    protected override void WriteProperties(IDataPipeWriter writer)
+    {
+      writer.WriteObject(nameof(ViewModel), ViewModel);
+      writer.WriteObject(nameof(MyProperty), MyProperty);
+    }
+  }
+}
+```
    
 ## MyButtonViewModelEndpoint.cs
-   ```c#
-   using System.Composition;
-   using Microsoft.DotNet.DesignTools.Protocol.DataPipe;
-   using Microsoft.DotNet.DesignTools.Protocol.Endpoints;
-   
-   namespace MyButton.ClientServerProtocol
-   {
-     [Shared]
-     [ExportEndpoint]
-     public class MyButtonViewModelEndpoint :
-     Endpoint<MyButtonViewModelRequest, MyButtonViewModelResponse>
-     {
-       public override string Name => EndpointNames.MyButtonViewModel;
-       protected override MyButtonViewModelRequest
-       CreateRequest(IDataPipeReader reader) => new(reader);
-       protected override MyButtonViewModelResponse CreateResponse(IDataPipeReader reader) => new(reader);
-     }
-   }
-   ```
+```c#
+using System.Composition;
+using Microsoft.DotNet.DesignTools.Protocol.DataPipe;
+using Microsoft.DotNet.DesignTools.Protocol.Endpoints;
+
+namespace MyButton.ClientServerProtocol
+{
+  [Shared]
+  [ExportEndpoint]
+  public class MyButtonViewModelEndpoint : Endpoint<MyButtonViewModelRequest, MyButtonViewModelResponse>
+  {
+    public override string Name => EndpointNames.MyButtonViewModel;
+    
+    protected override MyButtonViewModelRequest CreateRequest(IDataPipeReader reader)
+      => new(reader);
+    
+    protected override MyButtonViewModelResponse CreateResponse(IDataPipeReader reader)
+      => new(reader);
+  }
+}
+```
    
    
 # Third Part - MyButton.Designer.Server
@@ -320,150 +338,157 @@ Then install NuGet by first choosing package source from the dropdown list.
    * [TypeRoutingProvider.cs](#typeroutingprovidercs)
 
 ## MyButtonDesigner.cs
-   ```c#
-   using Microsoft.DotNet.DesignTools.Designers;
-   using Microsoft.DotNet.DesignTools.Designers.Actions;
-   
-   namespace MyButton.Designer.Server
-   {
-     internal partial class MyButtonDesigner : ControlDesigner
-     {
-       public override DesignerActionListCollection ActionLists 
-         => new()
-         {
-           new ActionList(this)
-         };
-     }
-   }
-   ```
+```c#
+using Microsoft.DotNet.DesignTools.Designers;
+using Microsoft.DotNet.DesignTools.Designers.Actions;
+
+namespace MyButton.Designer.Server
+{
+  internal partial class MyButtonDesigner : ControlDesigner
+  {
+    public override DesignerActionListCollection ActionLists 
+      => new()
+      {
+        new ActionList(this)
+      };
+  }
+}
+```
+
 ## MyButtonViewModel.cs
-   ```c#
-   using Microsoft.DotNet.DesignTools.ViewModels;
-   using System;
-   using System.Diagnostics.CodeAnalysis;
-   using MyButton.ClientServerProtocol;
-   using MyButtonControl;
-   
-   namespace MyButton.Designer.Server
-   {
-     internal partial class MyButtonViewModel : ViewModel
-     {
-       public MyButtonViewModel(IServiceProvider provider) : base(provider)
-       {
-       }
-       public MyButtonViewModelResponse Initialize(object myProperty)
-       {
-         MyProperty = new MyType(myProperty.ToString());
-         return new MyButtonViewModelResponse(this, MyProperty);
-       }
-       [AllowNull]
-       public MyType MyProperty { get; set; }
-     }
-   }
-   ```
+```c#
+using Microsoft.DotNet.DesignTools.ViewModels;
+using System;
+using System.Diagnostics.CodeAnalysis;
+using MyButton.ClientServerProtocol;
+using MyButtonControl;
+
+namespace MyButton.Designer.Server
+{
+  internal partial class MyButtonViewModel : ViewModel
+  {
+    public MyButtonViewModel(IServiceProvider provider) : base(provider)
+    {
+    }
+    
+    public MyButtonViewModelResponse Initialize(object myProperty)
+    {
+      MyProperty = new MyType(myProperty.ToString());
+      return new MyButtonViewModelResponse(this, MyProperty);
+    }
+    
+    [AllowNull]
+    public MyType MyProperty { get; set; }
+  }
+}
+```
    
 ## MyButton.ActionList.cs
-   ```c#
-   using Microsoft.DotNet.DesignTools.Designers.Actions;
-   using System.ComponentModel;
-   using MyButtonControl;
-   
-   namespace MyButton.Designer.Server
-   {
-     internal partial class MyButtonDesigner
-     {
-       private class ActionList : DesignerActionList
-       {
-         private const string Behavior = nameof(Behavior);
-         private const string Data = nameof(Data);
-         public ActionList(MyButtonDesigner designer) : base(designer.Component)
-         {
-         }
-         public MyType MyProperty
-         {
-           get => ((MyButtonControl.MyButton)Component!).MyProperty;
-           set => TypeDescriptor.GetProperties(Component!)[nameof(MyProperty)]!.SetValue(Component, value);
-         }
-         public override DesignerActionItemCollection GetSortedActionItems()
-         {
-           DesignerActionItemCollection actionItems = new()
-           {
-             new DesignerActionHeaderItem(Behavior),
-             new DesignerActionHeaderItem(Data),
-             new DesignerActionPropertyItem(
-               nameof(MyProperty),
-               "Empty form",
-               Behavior,
-               "Display empty form.")
-           };
-           return actionItems;
-         }
-       }
-     }
-   }
-   ```
+```c#
+using Microsoft.DotNet.DesignTools.Designers.Actions;
+using System.ComponentModel;
+using MyButtonControl;
+
+namespace MyButton.Designer.Server
+{
+  internal partial class MyButtonDesigner
+  {
+    private class ActionList : DesignerActionList
+    {
+      private const string Behavior = nameof(Behavior);
+      
+      private const string Data = nameof(Data);
+      
+      public ActionList(MyButtonDesigner designer) : base(designer.Component)
+      {
+      }
+      
+      public MyType MyProperty
+      {
+        get => ((MyButtonControl.MyButton)Component!).MyProperty;
+        set => TypeDescriptor.GetProperties(Component!)[nameof(MyProperty)]!.SetValue(Component, value);
+      }
+      
+      public override DesignerActionItemCollection GetSortedActionItems()
+      {
+        DesignerActionItemCollection actionItems = new()
+        {
+          new DesignerActionHeaderItem(Behavior),
+          new DesignerActionHeaderItem(Data),
+          new DesignerActionPropertyItem(
+            nameof(MyProperty),
+            "Empty form",
+            Behavior,
+            "Display empty form.")
+        };
+        return actionItems;
+      }
+    }
+  }  
+}
+```
 
 ## MyButtonViewModelHandler.cs
-   ```c#
-   using Microsoft.DotNet.DesignTools.Protocol.Endpoints;
-   using MyButton.ClientServerProtocol;
-   
-   namespace MyButton.Designer.Server
-   {
-     [ExportRequestHandler(EndpointNames.MyButtonViewModel)]
-     public class MyButtonViewModelHandler : RequestHandler<MyButtonViewModelRequest, MyButtonViewModelResponse>
-     {
-       public override MyButtonViewModelResponse HandleRequest(MyButtonViewModelRequest request)
-       {
-         var designerHost = GetDesignerHost(request.SessionId);
-         var viewModel = CreateViewModel<MyButtonViewModel>(designerHost);
-         return viewModel.Initialize(request.MyPropertyEditorProxy!);
-       }
-     }
-   }
-   ```
+```c#
+using Microsoft.DotNet.DesignTools.Protocol.Endpoints;
+using MyButton.ClientServerProtocol;
+
+namespace MyButton.Designer.Server
+{
+  [ExportRequestHandler(EndpointNames.MyButtonViewModel)]
+  public class MyButtonViewModelHandler : RequestHandler<MyButtonViewModelRequest, MyButtonViewModelResponse>
+  {
+    public override MyButtonViewModelResponse HandleRequest(MyButtonViewModelRequest request)
+    {
+      var designerHost = GetDesignerHost(request.SessionId);
+      var viewModel = CreateViewModel<MyButtonViewModel>(designerHost);
+      return viewModel.Initialize(request.MyPropertyEditorProxy!);
+    }
+  }
+}
+```
 
 ## MyButtonViewModel.Factory.cs
-   ```c#
-   using Microsoft.DotNet.DesignTools.ViewModels;
-   using System;
-   using MyButton.ClientServerProtocol;
-   
-   namespace MyButton.Designer.Server
-   {
-     internal partial class MyButtonViewModel
-     {
-       [ExportViewModelFactory(ViewModelNames.MyButtonViewModel)]
-       private class Factory : ViewModelFactory<MyButtonViewModel>
-       {
-         protected override MyButtonViewModel CreateViewModel(IServiceProvider provider)
-           => new(provider);
-       }
-     }
-   }
-   ```
+```c#
+using Microsoft.DotNet.DesignTools.ViewModels;
+using System;
+using MyButton.ClientServerProtocol;
+
+namespace MyButton.Designer.Server
+{
+  internal partial class MyButtonViewModel
+  {
+    [ExportViewModelFactory(ViewModelNames.MyButtonViewModel)]
+    private class Factory : ViewModelFactory<MyButtonViewModel>
+    {
+      protected override MyButtonViewModel CreateViewModel(IServiceProvider provider)
+        => new(provider);
+    }
+  }
+}
+```
 
 ## TypeRoutingProvider.cs
-   ```c#
-   using Microsoft.DotNet.DesignTools.TypeRouting;
-   using System.Collections.Generic;
+```c#
+using Microsoft.DotNet.DesignTools.TypeRouting;
+using System.Collections.Generic;
    
-   namespace MyButton.Designer.Server
-   {
-     [ExportTypeRoutingDefinitionProvider]
-     internal class TypeRoutingProvider : TypeRoutingDefinitionProvider
-     {
-       public override IEnumerable<TypeRoutingDefinition> GetDefinitions()
-         => new[]
-         {
-           new TypeRoutingDefinition(
-             TypeRoutingKinds.Designer,
-             nameof(MyButtonDesigner),
-            typeof(MyButtonDesigner))
-         };
-     }
-   }
-   ```
+namespace MyButton.Designer.Server
+{
+  [ExportTypeRoutingDefinitionProvider]
+  internal class TypeRoutingProvider : TypeRoutingDefinitionProvider
+  {
+    public override IEnumerable<TypeRoutingDefinition> GetDefinitions()
+      => new[]
+      {
+        new TypeRoutingDefinition(
+          TypeRoutingKinds.Designer,
+          nameof(MyButtonDesigner),
+         typeof(MyButtonDesigner))
+      };
+  }
+}
+```
 
 ## Fourth Part - MyButton.Designer.Client
 1. Create a new .NET 6 class library project. Change `.csproj` to look like:
@@ -488,109 +513,118 @@ Then install NuGet by first choosing package source from the dropdown list.
    * [MyButtonEditor.cs](#mybuttoneditorcs)
    * [TypeRoutingProvider.cs](#typeroutingprovidercs_client)
 
-## MyButtonViewModel.cs
-   ```c#
-   using System;
-   using Microsoft.DotNet.DesignTools.Client.Proxies;
-   using Microsoft.DotNet.DesignTools.Client;
-   using Microsoft.DotNet.DesignTools.Client.Views;
-   using MyButton.ClientServerProtocol;
-   
-   namespace MyButton.Designer.Client
-   {
-     internal partial class MyButtonViewModel : ViewModelClient
-     {
-       [ExportViewModelClientFactory(ViewModelNames.MyButtonViewModel)]
-       private class Factory : ViewModelClientFactory<MyButtonViewModel>
-       {
-         protected override MyButtonViewModel CreateViewModelClient(ObjectProxy? viewModel)
-           => new(viewModel);
-       }
-       private MyButtonViewModel(ObjectProxy? viewModel) : base(viewModel)
-       {
-         if (viewModel is null)
-         {
-           throw new NullReferenceException(nameof(viewModel));
-         }
-       }
-       public static MyButtonViewModel Create(IServiceProvider provider, object? templateAssignmentProxy)
-       {
-         var session = provider.GetRequiredService<DesignerSession>();
-         var client = provider.GetRequiredService<IDesignToolsClient>();
-         var createViewModelEndpointSender = client.Protocol.GetEndpoint<MyButtonViewModelEndpoint>().GetSender(client);
-         var response = createViewModelEndpointSender.SendRequest(new MyButtonViewModelRequest(session.Id, templateAssignmentProxy));
-         var viewModel = (ObjectProxy)response.ViewModel!;
-         var clientViewModel = provider.CreateViewModelClient<MyButtonViewModel>(viewModel);
-         return clientViewModel;
-       }
-       public object? MyProperty
-       {
-         get => ViewModelProxy?.GetPropertyValue(nameof(MyProperty));
-         set => ViewModelProxy?.SetPropertyValue(nameof(MyProperty), value);
-       }
-     }
-   }
-   ```
-   
 <a id="mybuttonviewmodelcs_client" ></a>
+## MyButtonViewModel.cs
+```c#
+using System;
+using Microsoft.DotNet.DesignTools.Client.Proxies;
+using Microsoft.DotNet.DesignTools.Client;
+using Microsoft.DotNet.DesignTools.Client.Views;
+using MyButton.ClientServerProtocol;
+
+namespace MyButton.Designer.Client
+{
+  internal partial class MyButtonViewModel : ViewModelClient
+  {
+    [ExportViewModelClientFactory(ViewModelNames.MyButtonViewModel)]
+    private class Factory : ViewModelClientFactory<MyButtonViewModel>
+    {
+      protected override MyButtonViewModel CreateViewModelClient(ObjectProxy? viewModel)
+        => new(viewModel);
+    }
+    
+    private MyButtonViewModel(ObjectProxy? viewModel) : base(viewModel)
+    {
+      if (viewModel is null)
+      {
+        throw new NullReferenceException(nameof(viewModel));
+      }
+    }
+    
+    public static MyButtonViewModel Create(IServiceProvider provider, object? templateAssignmentProxy)
+    {
+      var session = provider.GetRequiredService<DesignerSession>();
+      var client = provider.GetRequiredService<IDesignToolsClient>();
+      
+      var createViewModelEndpointSender = client.Protocol.GetEndpoint<MyButtonViewModelEndpoint>().GetSender(client);
+      
+      var response = createViewModelEndpointSender.SendRequest(new MyButtonViewModelRequest(session.Id, templateAssignmentProxy));
+      
+      var viewModel = (ObjectProxy)response.ViewModel!;
+      
+      var clientViewModel = provider.CreateViewModelClient<MyButtonViewModel>(viewModel);
+      
+      return clientViewModel;
+    }
+    
+    public object? MyProperty
+    {
+      get => ViewModelProxy?.GetPropertyValue(nameof(MyProperty));
+      set => ViewModelProxy?.SetPropertyValue(nameof(MyProperty), value);
+    }
+  }
+}
+```
+
 ## MyButtonEditor.cs
-   ```c#
-   using System;
-   using System.ComponentModel;
-   using System.Drawing.Design;
-   using System.Windows.Forms;
-   using System.Windows.Forms.Design;
-   
-   namespace MyButton.Designer.Client
-   {
-     public class MyButtonEditor : UITypeEditor
-     {
-       public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
-         => UITypeEditorEditStyle.Modal;
-       public override object? EditValue(ITypeDescriptorContext context, IServiceProvider provider, object? value)
-       {
-         if (provider is null)
-         {
-           return value;
-         }
-         
-         Form myTestForm;
-         myTestForm = new Form();
-         var editorService = provider.GetRequiredService<IWindowsFormsEditorService>();
-         editorService.ShowDialog(myTestForm);
-         
-         MyButtonViewModel viewModelClient = MyButtonViewModel.Create(provider, "test");
-         return viewModelClient.MyProperty;
-       }
-     }
-   }
-   ```
+```c#
+using System;
+using System.ComponentModel;
+using System.Drawing.Design;
+using System.Windows.Forms;
+using System.Windows.Forms.Design;
+
+namespace MyButton.Designer.Client
+{
+  public class MyButtonEditor : UITypeEditor
+  {
+    public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
+      => UITypeEditorEditStyle.Modal;
+      
+    public override object? EditValue(ITypeDescriptorContext context, IServiceProvider provider, object? value)
+    {
+      if (provider is null)
+      {
+        return value;
+      }
+      
+      Form myTestForm;
+      myTestForm = new Form();
+      var editorService = provider.GetRequiredService<IWindowsFormsEditorService>();
+      editorService.ShowDialog(myTestForm);
+      
+      MyButtonViewModel viewModelClient = MyButtonViewModel.Create(provider, "test");
+      return viewModelClient.MyProperty;
+    }
+  }
+}
+```
 
 <a id="typeroutingprovidercs_client"></a>
 ## TypeRoutingProvider.cs
-   ```c#
-   using Microsoft.DotNet.DesignTools.Client.TypeRouting;
-   using System.Collections.Generic;
-   
-   namespace MyButton.Designer.Client
-   {
-     [ExportTypeRoutingDefinitionProvider]
-     internal class TypeRoutingProvider : TypeRoutingDefinitionProvider
-     {
-       public override IEnumerable<TypeRoutingDefinition> GetDefinitions()
-       {
-         return new[]
-         {
-           new TypeRoutingDefinition(
-             TypeRoutingKinds.Editor,
-             nameof(MyButtonEditor),
-             typeof(MyButtonEditor)
-           )
-         };
-       }
-     }
-   }
-   ```
+```c#
+using Microsoft.DotNet.DesignTools.Client.TypeRouting;
+using System.Collections.Generic;
+
+namespace MyButton.Designer.Client
+{
+  [ExportTypeRoutingDefinitionProvider]
+  internal class TypeRoutingProvider : TypeRoutingDefinitionProvider
+  {
+    public override IEnumerable<TypeRoutingDefinition> GetDefinitions()
+    {
+      return new[]
+      {
+        new TypeRoutingDefinition(
+          TypeRoutingKinds.Editor,
+          nameof(MyButtonEditor),
+          typeof(MyButtonEditor)
+        )
+      };
+    }
+  }
+}
+```
    
 # Fifth Part - MyButton.Package
 1. Create a new .NET 6 class library project, delete `Class1.cs`. Change `.csproj` to look like:
