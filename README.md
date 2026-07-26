@@ -30,4 +30,4 @@ There should be another problem to fix: "Directory.Build.targets" requires the p
 ## Content of this repository
 
 * A restored copy of the [CodeProject sample "Writing Custom Control in .NET 6"](CodeProjectSample/README.md)
-* A series of samples for using [Snaplines](Snaplines/README.md)
+* A series of samples for using [SnapLines](SnapLines/README.md)

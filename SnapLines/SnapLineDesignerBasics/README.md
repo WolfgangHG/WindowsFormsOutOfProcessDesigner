@@ -24,7 +24,7 @@ The vertical lines will also create snaplines:
 
 # The solution structure
 
-First you should read the [full designer sample with custom properties](CodeProjectSample/README.md) to understand the project
+First you should read the [full designer sample with custom properties](../../CodeProjectSample/README.md) to understand the project
 structure and the Nuget package handling. But our approach is simpler, we don't need the .NET 4.8 "Client" project, and thus the "Protocol" project
 is also not necessary.
 
