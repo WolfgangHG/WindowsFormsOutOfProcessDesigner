@@ -12,7 +12,7 @@ For basic understanding, you should start with **two blog posts** of the designe
 Then there are two **Microsoft code samples**: [TileRepeater_Medium](https://github.com/microsoft/winforms-designer-extensibility/tree/main/Samples/TypeEditor/Dotnet/TileRepeater_Medium) 
 and [TileRepeater_Simplified](https://github.com/microsoft/winforms-designer-extensibility/tree/main/Samples/TypeEditor/Dotnet/TileRepeater_Simplified).
 
-The "winforms-designer-extensibility" repository contains also a **"Project Template" project** [TypeEditor]([https://github.com/microsoft/winforms-designer-extensibility/tree/main/Templates/TypeEditor])
+The "winforms-designer-extensibility" repository contains also a **"Project Template" project** [TypeEditor](https://github.com/microsoft/winforms-designer-extensibility/tree/main/Templates/TypeEditor)
 that you have to build yourself and register it in Visual Studio. 
 Note: when building the template, there is a change necessary to avoid an error: in "prepareTemplates.bat" change the call
 `dotnet pack` to `dotnet pack -c Debug` (.NET 8 creates a "Release" build by default: https://github.com/microsoft/winforms-designer-extensibility/issues/30)
