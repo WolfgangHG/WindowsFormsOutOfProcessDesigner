@@ -10,7 +10,7 @@ So, below is the original CodeProject description.
 The sample code is found in directory [MyButtonDesignerTest](/CodeProjectSample/MyButtonDesignerTest). It uses .NET 9.0 and 
 the package `Microsoft.WinForms.Designer.SDK` was upgraded to the most recent version `1.6.0`
 
-I addition to the original text, I added a small sample app to the solution, see [The sample app](#the-sample-app)
+In addition to the original text, I added a small sample app to the solution, see [The sample app](#the-sample-app)
 
 *The following text is the original text converted to Markdown. So the .NET version and the package version don't match the current sample code.*
 
