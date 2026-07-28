@@ -15,4 +15,6 @@ Left/Right/Top/Bottom baselines are used to align the edges of controls:
 
 ## The samples
 * The first sample [SnapLineDesignerBasics](SnapLineDesignerBasics/README.md) demonstrates how to add custom snaplines to a control.
+* The second sample [SnapLineDesignerFromChild](SnapLineDesignerFromChild/README.md) shows how you can expose snaplines 
+of controls inside a custom `UserControl` on the form that contains this `UserControl`.
 

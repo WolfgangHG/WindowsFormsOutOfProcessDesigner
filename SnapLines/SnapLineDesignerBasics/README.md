@@ -30,7 +30,7 @@ is also not necessary.
 
 My sample consists of three projects:
 * SnapLineBasics.Control: this library contains a custom control `MyPanel`.
-* SnapLineBasics.Designer.Server: the WinForms designer project (server side). It contains the server implementation.
+* SnapLineBasics.Designer.Server: the WinForms designer project (server side). It contains the design server implementation.
 * SnapLineBasics.Package: creates a Nuget Package containing the `SnapLineBasics.Control` and `SnapLineBasics.Designer.Server` dlls.
 
 There is also a sample app project `MySampleApp` which references the user control.
