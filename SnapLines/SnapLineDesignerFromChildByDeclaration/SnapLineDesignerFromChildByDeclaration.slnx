@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="NuGet.config" />
+  </Folder>
+  <Project Path="MySampleApp/MySampleApp.csproj">
+    <BuildDependency Project="SnapLineFromChildByDeclaration.Package/SnapLineFromChildByDeclaration.Package.csproj" />
+  </Project>
+  <Project Path="SnapLineFromChildByDeclaration.Common/SnapLineFromChildByDeclaration.Common.csproj" />
+  <Project Path="SnapLineFromChildByDeclaration.Designer.Server/SnapLineFromChildByDeclaration.Designer.Server.csproj" />
+  <Project Path="SnapLineFromChildByDeclaration.Package/SnapLineFromChildByDeclaration.Package.csproj">
+    <BuildDependency Project="SnapLineFromChildByDeclaration.Designer.Server/SnapLineFromChildByDeclaration.Designer.Server.csproj" />
+  </Project>
+</Solution>

@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);_GetFilesToPackage</TargetsForTfmSpecificContentInPackage>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+  </PropertyGroup>
+  <Target Name="_GetFilesToPackage">
+    <ItemGroup>
+      <_File Include="$(SolutionDir)\SnapLineFromChildByDeclaration.Common\bin\$(Configuration)\net9.0-windows\SnapLineFromChildByDeclaration.Common.dll" />
+
+      <_File Include="$(SolutionDir)\SnapLineFromChildByDeclaration.Designer.Server\bin\$(Configuration)\net9.0-windows\SnapLineFromChildByDeclaration.Designer.Server.dll" 
+             TargetDir="Design/WinForms/Server" />
+    </ItemGroup>
+    <ItemGroup>
+      <TfmSpecificPackageFile Include="@(_File)" PackagePath="$(BuildOutputTargetFolder)/$(TargetFramework)/%(_File.TargetDir)" />
+    </ItemGroup>
+  </Target>
+
+</Project>
